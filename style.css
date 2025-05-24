@@ -334,7 +334,7 @@ button:hover {
 /* SEÇÃO DE ASSISTÊNCIAS */
 .assistencias {
     text-align: center;
-    padding: 60px 20px;
+    padding: 60px px;
     background: #fff;
 }
 
@@ -355,7 +355,7 @@ button:hover {
 /* CARD INDIVIDUAL */
 .assist-card {
     background: #f9f9f9;
-    padding: 20px;
+    padding: px;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 300px;
@@ -435,7 +435,7 @@ button:hover {
     }
 
     .assist-card {
-        width: 195px;
+        width: 180px;
         gap: 0px;
     }
 
