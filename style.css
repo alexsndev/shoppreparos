@@ -435,10 +435,14 @@ button:hover {
     }
 
     .assist-card {
-        width: 180px;
+        width: 150px;
         gap: 0px;
     }
 
+
+    .assist-card p  {
+       font-size: 14px;
+    }
 }
 
 /* swiper stories-carousel */
