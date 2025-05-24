@@ -152,6 +152,11 @@ nav {
         margin-bottom: 30px;
         overflow: auto;
     }
+
+    .logo img{
+        width: 20git0px;
+        height: 100%;
+    }
 }
 
 .slides {
@@ -430,7 +435,8 @@ button:hover {
     }
 
     .assist-card {
-        width: 230px;
+        width: 195px;
+        gap: 0px;
     }
 
 }
