@@ -136,5 +136,32 @@ const swiper = new Swiper(".mySwiper", {
 
 
 
+(function() {
+  const carrossel = document.querySelector('.carrossel-parceiros');
+  const btnEsquerda = document.querySelector('.parceiros-seta.esquerda');
+  const btnDireita = document.querySelector('.parceiros-seta.direita');
+
+  if (!carrossel || !btnEsquerda || !btnDireita) return;
+
+  const passo = 200;
+
+  btnEsquerda.addEventListener('click', () => {
+    carrossel.scrollBy({ left: -passo, behavior: 'smooth' });
+  });
+
+  btnDireita.addEventListener('click', () => {
+    carrossel.scrollBy({ left: passo, behavior: 'smooth' });
+  });
+
+  // autoplay (opcional)
+  setInterval(() => {
+    carrossel.scrollBy({ left: passo, behavior: 'smooth' });
+  }, 4000);
+})();
+
+
+
+
+
  
 
