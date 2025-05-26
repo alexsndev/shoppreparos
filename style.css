@@ -1,6 +1,7 @@
 /* Reset básico */
 * {
-
+    text-align: center;
+    font-family: "Inter", sans-serif;
     padding: 0;
     box-sizing: border-box;
 }
@@ -13,11 +14,12 @@ body {
 }
 
 
-.containter {
+.container {
     max-width: 1250px;
     width: 100%;
     margin: 0 auto;
     padding: 0 20px;
+
     /* espaçamento lateral opcional */
 }
 
@@ -80,13 +82,6 @@ body {
     }
 }
 
-
-
-
-
-
-
-
 .logo img {
     height: 40px;
     margin-top: 4px;
@@ -121,6 +116,92 @@ nav {
 }
 
 
+
+/* swiper stories-carousel */
+
+.container-stories {
+    margin-block: 30px;
+}
+
+.story {
+    text-align: center;
+    background-color: transparent;
+}
+
+.story-icon {
+
+    width: 70px;
+    height: 70px;
+    border: 2px solid #FFC107;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 8px;
+    padding: 2px;
+    /* micro espaço entre imagem e borda */
+
+    /* degradê personalizado */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    /* ou transparent, dependendo do fundo */
+}
+
+.story-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.story p {
+    font-size: 13px;
+    color: rgb(0, 0, 0);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.swiper {
+    padding: 20px 0;
+
+}
+
+
+
+
+
+.swiper-button-prev,
+.swiper-button-next {
+    top: 200px;
+    /* leva os botões para o topo do swiper */
+    display: none;
+}
+
+
+
+/* Ajuste a posição esquerda e direita */
+.swiper-button-prev {
+    left: 10px;
+}
+
+.swiper-button-next {
+    right: 10px;
+}
+
+
+/* Oculta setas no mobile */
+@media (max-width: 767px) {
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none !important;
+    }
+}
+
+
+
+
+
 /* BANNER */
 .carrossel {
     position: relative;
@@ -129,6 +210,7 @@ nav {
     margin: auto;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-block: 50px;
 }
 
 .carrossel-mobile {
@@ -140,6 +222,7 @@ nav {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: none;
 }
+
 
 @media (max-width: 767px) {
 
@@ -153,7 +236,7 @@ nav {
         overflow: auto;
     }
 
-    .logo img{
+    .logo img {
         width: 200px;
         height: 100%;
     }
@@ -195,7 +278,7 @@ nav {
 }
 
 .seta.esquerda {
-    left: 10px;
+    left: px;
 }
 
 .seta.direita {
@@ -206,6 +289,7 @@ nav {
     position: absolute;
     bottom: 15px;
     left: 50%;
+
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
@@ -233,6 +317,7 @@ nav {
     flex-direction: row;
     gap: 20px;
     justify-content: center;
+    margin-bottom: 50px;
 }
 
 .card {
@@ -334,7 +419,7 @@ button:hover {
 /* SEÇÃO DE ASSISTÊNCIAS */
 .assistencias {
     text-align: center;
-    padding: 60px px;
+    padding-block: 50px;
     background: #fff;
 }
 
@@ -346,23 +431,22 @@ button:hover {
 
 /* GRID DE CARDS */
 .cards-marcas {
-    display: flex;
+    display: grid;
     gap: 20px;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
 }
 
 /* CARD INDIVIDUAL */
 .assist-card {
     background: #f9f9f9;
-    padding: px;
+    width: 100%;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 100%;
     transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .assist-card:hover {
@@ -372,7 +456,8 @@ button:hover {
 /* GALERIA DE IMAGENS */
 .galery {
     width: 100%;
-    height: 150px;
+    aspect-ratio: 1 / 1;
+    /* mantém a forma quadrada */
     border-radius: 12px;
     overflow: hidden;
     position: relative;
@@ -425,88 +510,67 @@ button:hover {
 }
 
 
-
-/* RESPONSIVO */
 @media (max-width: 768px) {
     .cards-marcas {
-        flex-direction: row;
-        align-items: center;
+        display: grid;
+        gap: 20px;
+        justify-content: space-between;
         flex-wrap: wrap;
-    }
-
-    .assist-card {
-        width: 150px;
-        gap: 0px;
-    }
-
-
-    .assist-card p  {
-       font-size: 14
-       px;
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* swiper stories-carousel */
 
-.container-stories {
-    margin-block: 30px;
+
+
+/* INICIO SESSÃO DE ESPECIALISTAS EM REPAROS HIDRÁULICOS*/
+
+
+
+.especialistas {
+    margin-block: 50px;
 }
 
-.story {
-    text-align: center;
-    background-color: transparent;
+.especialistas h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #222;
 }
 
-.story-icon {
- 
-    width: 70px;
-    height: 70px;
-    border: 2px solid #FFC107;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 0 auto 8px;
-    padding: 2px;
-    /* micro espaço entre imagem e borda */
-     
-    /* degradê personalizado */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff;
-    /* ou transparent, dependendo do fundo */
+.especialistas .col-1 {
+
+    display: grid;
+    gap: 10px;
+    /* Espaço entre as imagens */
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 colunas no desktop */
 }
 
-.story-icon img {
+.especialistas .col-1 img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+    clip-path: inset(2%);
+    /* Come 2% das bordas de todos os lados */
 
-.story p {
-    font-size: 13px;
-    color: rgb(0, 0, 0);
-    margin: 0;
-    padding: 0;
-    text-align: center;
-}
-
-.swiper {
-    padding: 20px 0;
-    
-}
-
-.swiper-button-next,
-.swiper-button-prev {
-    color: white;
 }
 
 
-/* Oculta setas no mobile */
-@media (max-width: 767px) {
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+    .especialistas .col-1 {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 colunas no mobile */
 
-    .swiper-button-next,
-    .swiper-button-prev {
-        display: none !important;
+    }
+
+    .especialistas .col-1 img {
+        border-radius: 20px;
+        /* Faz um crop inteligente */
+        object-position: center;
+        /* Centraliza o foco */
+        clip-path: inset(2%);
+        /* Come 2% das bordas de todos os lados */
+
     }
 }
 
@@ -514,73 +578,207 @@ button:hover {
 
 
 
+/* INICIO DE Nossas Lojas EM REPAROS HIDRÁULICOS*/
+
+
+.nossaslojas h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #222;
+}
+
+
+.lojas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.lojas .loja img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    border-radius: 20px;
+
+}
+
+
+@media (max-width: 768px) {
+
+    .lojas {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .lojas .loja img {
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+
+    }
+
+}
+
+
+/* FINAL DE Nossas Lojas EM REPAROS HIDRÁULICOS*/
+
+/* FINAL DE ESPECIALISTAS EM REPAROS HIDRÁULICOS*/
 
 
 /* RODAPÉ*/
 
 .footer {
-  background-color: #111;
-  color: #fff;
-  padding: 30px 20px;
-  font-size: 14px;
+    background-color: #111;
+    color: #fff;
+    padding: 30px 20px;
+    font-size: 14px;
 }
 
 .footer-container {
-  max-width: 900px;
-  margin: 0 auto;
-  display: grid;
-  gap: 20px;
-  text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    gap: 20px;
+    text-align: center;
 }
 
 .footer-logo img {
-  width: 100px;
-  margin-bottom: 10px;
+    width: 100px;
+    margin-bottom: 10px;
 }
 
 .footer-links a {
-  display: block;
-  color: #ccc;
-  text-decoration: none;
-  margin: 6px 0;
-  transition: color 0.3s;
+    display: block;
+    color: #ccc;
+    text-decoration: none;
+    margin: 6px 0;
+    transition: color 0.3s;
 }
 
 .footer-links a:hover {
-  color: #fff;
+    color: #fff;
 }
 
 .footer-social a {
-  margin: 0 10px;
-  font-size: 20px;
-  color: #ffc107;
-  transition: transform 0.3s;
+    margin: 0 10px;
+    font-size: 20px;
+    color: #ffc107;
+    transition: transform 0.3s;
 }
 
 .footer-social a:hover {
-  transform: scale(1.2);
+    transform: scale(1.2);
 }
 
 .footer-copy {
-  font-size: 12px;
-  color: #888;
+    font-size: 12px;
+    color: #888;
+}
+
+
+/* Parceiros */
+
+.parceiros {
+    padding: 40px 20px;
+    background-color: #f8f8f8;
+    text-align: center;
+}
+
+.parceiros h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.carrossel-parceiros-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.carrossel-parceiros {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.carrossel-parceiros::-webkit-scrollbar {
+    display: none;
+}
+
+.carrossel-parceiros .item {
+    flex: 0 0 auto;
+    width: 100px;
+}
+
+.carrossel-parceiros .item img {
+    width: 100%;
+    height: auto;
+    filter: grayscale(1);
+    transition: filter 0.3s;
+}
+
+.carrossel-parceiros .item img:hover {
+    filter: grayscale(0);
+}
+
+.parceiros-seta {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.parceiros-seta:hover {
+    opacity: 1;
+}
+
+.parceiros-seta.esquerda {
+    left: 0;
+}
+
+.parceiros-seta.direita {
+    right: 0;
+}
+
+/* Desktop: mostra até 9 logos */
+@media (min-width: 768px) {
+    .carrossel-parceiros .item {
+        width: 120px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .carrossel-parceiros .item {
+        width: 130px;
+    }
 }
 
 /* Desktop */
 @media (min-width: 768px) {
-  .footer-container {
-    grid-template-columns: 1fr 1fr 1fr;
-    text-align: left;
-    align-items: center;
-  }
+    .footer-container {
+        grid-template-columns: 1fr 1fr 1fr;
+        text-align: left;
+        align-items: center;
+    }
 
-  .footer-copy {
-    grid-column: span 3;
-    text-align: center;
-  }
+    .footer-copy {
+        grid-column: span 3;
+        text-align: center;
+    }
 
-  .footer-links a {
-    display: inline-block;
-    margin: 0 12px;
-  }
+    .footer-links a {
+        display: inline-block;
+        margin: 0 12px;
+    }
 }
