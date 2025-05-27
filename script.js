@@ -9,14 +9,18 @@ function iniciarCarrossel(selector) {
     const setaEsquerda = carrossel.querySelector('.seta.esquerda');
 
     let indiceAtual = 0;
+    let autoplayInterval;
 
-    // 🔥 Cria os indicadores dinamicamente
+    // Cria os indicadores dinamicamente
     indicadoresContainer.innerHTML = '';
     slides.forEach((_, index) => {
         const bolinha = document.createElement('span');
         bolinha.classList.add('bolinha');
         if (index === 0) bolinha.classList.add('ativo');
-        bolinha.addEventListener('click', () => irParaSlide(index));
+        bolinha.addEventListener('click', () => {
+            pausarAutoplay();
+            irParaSlide(index);
+        });
         indicadoresContainer.appendChild(bolinha);
     });
 
@@ -41,11 +45,37 @@ function iniciarCarrossel(selector) {
         mostrarSlide(indiceAtual);
     }
 
-    setaDireita.addEventListener('click', () => irParaSlide(indiceAtual + 1));
-    setaEsquerda.addEventListener('click', () => irParaSlide(indiceAtual - 1));
+    // Navegação manual com pausa do autoplay
+    setaDireita.addEventListener('click', () => {
+        pausarAutoplay();
+        irParaSlide(indiceAtual + 1);
+    });
 
-    window.addEventListener('resize', () => mostrarSlide(indiceAtual));
+    setaEsquerda.addEventListener('click', () => {
+        pausarAutoplay();
+        irParaSlide(indiceAtual - 1);
+    });
 
+    window.addEventListener('resize', () => {
+        mostrarSlide(indiceAtual);
+    });
+
+    // Autoplay
+    function iniciarAutoplay() {
+        autoplayInterval = setInterval(() => {
+            irParaSlide(indiceAtual + 1);
+        }, 3000); // 3 segundos
+    }
+
+    function pausarAutoplay() {
+        clearInterval(autoplayInterval);
+    }
+
+    // Pausar ao passar o mouse (desktop)
+    carrossel.addEventListener('mouseenter', pausarAutoplay);
+    carrossel.addEventListener('mouseleave', iniciarAutoplay);
+
+    iniciarAutoplay();
     mostrarSlide(indiceAtual);
 }
 

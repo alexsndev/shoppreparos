@@ -36,75 +36,75 @@ body {
 
 
 .icone {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 }
 
 .icone img {
-  width: 32px;
-  height: 32px;
+    width: 32px;
+    height: 32px;
 }
 
 /* Dropdown moderno */
 .dropdown-info {
-  position: absolute;
-  top: 120%;
-  right: -110px;
-  transform: translateX(-50%);
-  width: 250px;
-  background: white;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-  border-radius: 12px;
-  padding: 15px;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
-  z-index: 10;
+    position: absolute;
+    top: 120%;
+    right: -110px;
+    transform: translateX(-50%);
+    width: 250px;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 10;
 }
 
 .icone:hover .dropdown-info,
 .icone:focus-within .dropdown-info {
-  opacity: 1;
-  pointer-events: auto;
-  top: 105%;
+    opacity: 1;
+    pointer-events: auto;
+    top: 105%;
 }
 
 .dropdown-info .logo {
-  width: 200px;
-  margin: 0 auto 10px;
-  display: block;
+    width: 200px;
+    margin: 0 auto 10px;
+    display: block;
 }
 
 .dropdown-info p {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 .whatsapp-btn {
-  display: block;
-  background: #25D366;
-  color: white;
-  text-align: center;
-  padding: 8px;
-  border-radius: 6px;
-  margin-bottom: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.2s ease;
+    display: block;
+    background: #25D366;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s ease;
 }
 
 .whatsapp-btn:hover {
-  background: #1ebe57;
+    background: #1ebe57;
 }
 
 /* Mapa */
 .dropdown-info iframe {
-  width: 100%;
-  height: 150px;
-  border-radius: 8px;
-  margin-bottom: 10px;
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 
@@ -326,8 +326,10 @@ nav {
 }
 
 .slide {
-    flex-shrink: 0;
-    width: 100%;
+    flex: 0 0 100%;
+    /* ← Garante que cada slide ocupa exatamente 100% do carrossel */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .slide img {
