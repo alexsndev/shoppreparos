@@ -202,7 +202,9 @@
             // Criar formulário dinamicamente para enviar DELETE
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = `/banners/${bannerId}`;
+            // Usar prefixo /admin correto da rota: Route::delete('banners/{banner}', ...)->prefix('admin')
+            const deleteBaseUrl = "{{ url('/admin/banners') }}";
+            form.action = `${deleteBaseUrl}/${bannerId}`;
             
             // Token CSRF
             const csrfToken = document.createElement('input');

@@ -12,26 +12,27 @@ use Illuminate\Support\Facades\Auth;
 
 class BannerController extends Controller
 {
-    private function checkAdmin()
+    public function __construct()
     {
-        if (!Auth::check() || Auth::user()->perfil !== 'admin') {
-            abort(403, 'Acesso não autorizado');
-        }
+        // Caso exista um middleware is_admin; se não, mantém a verificação manual
+        // $this->middleware(['auth','is_admin']);
     }
 
     public function index()
     {
-        $this->checkAdmin();
-        
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') abort(403);
+        // Banners ativos (não deletados) e ativos via flag
         $banners = Banner::where('is_active', true)->orderBy('ordem')->get();
-        $history = Banner::where('is_active', false)->orderBy('created_at', 'desc')->get();
-        
+        // Histórico: soft deletados ou inativos
+        $history = Banner::onlyTrashed()
+            ->orderBy('deleted_at','desc')
+            ->get();
         return view('banners.index', compact('banners', 'history'));
     }
 
     public function store(Request $request)
     {
-        $this->checkAdmin();
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') abort(403);
         
         $request->validate([
             'titulo' => 'required|string|max:255',
@@ -99,12 +100,12 @@ class BannerController extends Controller
 
     public function update(Request $request, Banner $banner)
     {
-        $this->checkAdmin();
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') abort(403);
         
         try {
             Log::info('Iniciando upload de banner');
             Log::info('Request data:', $request->all());
-            \Log::info('Files:', $request->allFiles());
+            Log::info('Files:', $request->allFiles());
             
             $request->validate([
                 'titulo' => 'nullable|string|max:255',
@@ -133,7 +134,7 @@ class BannerController extends Controller
 
             // Upload da nova imagem desktop
             if ($request->hasFile('desktop_image')) {
-                \Log::info('Processando upload desktop');
+                Log::info('Processando upload desktop');
                 $desktopFile = $request->file('desktop_image');
                 $desktopName = 'desktop_' . time() . '_' . Str::random(10) . '.' . $desktopFile->getClientOriginalExtension();
                 
@@ -148,7 +149,7 @@ class BannerController extends Controller
                     
                     // Mover arquivo usando método nativo
                     if ($desktopFile->move($destinationPath, $desktopName)) {
-                        \Log::info('Desktop image atualizada com sucesso: ' . $destinationPath . '/' . $desktopName);
+                        Log::info('Desktop image atualizada com sucesso: ' . $destinationPath . '/' . $desktopName);
                         
                         // Copiar também para public/storage para compatibilidade
                         $publicPath = public_path('storage/banners/desktop');
@@ -162,7 +163,7 @@ class BannerController extends Controller
                         throw new \Exception('Falha no upload da imagem desktop');
                     }
                 } catch (\Exception $e) {
-                    \Log::error('Erro no upload desktop (update): ' . $e->getMessage());
+                    Log::error('Erro no upload desktop (update): ' . $e->getMessage());
                     throw $e;
                 }
                 
@@ -184,7 +185,7 @@ class BannerController extends Controller
 
             // Upload da nova imagem mobile
             if ($request->hasFile('mobile_image')) {
-                \Log::info('Processando upload mobile');
+                Log::info('Processando upload mobile');
                 $mobileFile = $request->file('mobile_image');
                 $mobileName = 'mobile_' . time() . '_' . Str::random(10) . '.' . $mobileFile->getClientOriginalExtension();
                 
@@ -199,7 +200,7 @@ class BannerController extends Controller
                     
                     // Mover arquivo usando método nativo
                     if ($mobileFile->move($destinationPath, $mobileName)) {
-                        \Log::info('Mobile image atualizada com sucesso: ' . $destinationPath . '/' . $mobileName);
+                        Log::info('Mobile image atualizada com sucesso: ' . $destinationPath . '/' . $mobileName);
                         
                         // Copiar também para public/storage para compatibilidade
                         $publicPath = public_path('storage/banners/mobile');
@@ -213,7 +214,7 @@ class BannerController extends Controller
                         throw new \Exception('Falha no upload da imagem mobile');
                     }
                 } catch (\Exception $e) {
-                    \Log::error('Erro no upload mobile (update): ' . $e->getMessage());
+                    Log::error('Erro no upload mobile (update): ' . $e->getMessage());
                     throw $e;
                 }
                 
@@ -234,7 +235,7 @@ class BannerController extends Controller
             }
 
             $banner->save();
-            \Log::info('Banner salvo com sucesso');
+            Log::info('Banner salvo com sucesso');
 
             // Se for uma requisição AJAX, retornar JSON
             if ($request->ajax() || $request->wantsJson()) {
@@ -249,7 +250,7 @@ class BannerController extends Controller
             
         } catch (\Exception $e) {
             \Log::error('Erro ao atualizar banner: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
             
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
@@ -264,107 +265,34 @@ class BannerController extends Controller
 
     public function restore($id)
     {
-        if (auth()->user()->perfil !== 'admin') {
-            abort(403, 'Acesso não autorizado');
-        }
-        
-        $oldBanner = Banner::findOrFail($id);
-        $currentBanner = Banner::getActive();
-        
-        if (!$currentBanner) {
-            $currentBanner = new Banner();
-            $currentBanner->is_active = true;
-        }
-
-        // Restaurar imagem desktop
-        if ($oldBanner->desktop_old_image) {
-            $currentBanner->desktop_old_image = $currentBanner->desktop_image;
-            $currentBanner->desktop_image = $oldBanner->desktop_old_image;
-            
-            // Mover arquivos
-            $oldPath = 'public/banners/history/desktop/' . $oldBanner->desktop_old_image;
-            $newPath = 'public/banners/desktop/' . $oldBanner->desktop_old_image;
-            
-            if (Storage::exists($oldPath)) {
-                Storage::move($oldPath, $newPath);
-            }
-        }
-
-        // Restaurar imagem mobile
-        if ($oldBanner->mobile_old_image) {
-            $currentBanner->mobile_old_image = $currentBanner->mobile_image;
-            $currentBanner->mobile_image = $oldBanner->mobile_old_image;
-            
-            // Mover arquivos
-            $oldPath = 'public/banners/history/mobile/' . $oldBanner->mobile_old_image;
-            $newPath = 'public/banners/mobile/' . $oldBanner->mobile_old_image;
-            
-            if (Storage::exists($oldPath)) {
-                Storage::move($oldPath, $newPath);
-            }
-        }
-
-        $currentBanner->save();
-
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') abort(403);
+        // Este restore agora restaura um soft delete
+        $banner = Banner::onlyTrashed()->findOrFail($id);
+        $banner->restore();
         return redirect()->route('admin.banners.index')->with('success', 'Banner restaurado com sucesso!');
+    }
+
+    public function restoreSoft($id)
+    {
+        return $this->restore($id); // alias se quiser manter compatibilidade
     }
 
     public function gallery()
     {
-        if (auth()->user()->perfil !== 'admin') {
-            abort(403, 'Acesso não autorizado');
-        }
-        
-        $history = Banner::where('is_active', false)
-            ->orWhere('desktop_old_image', '!=', null)
-            ->orWhere('mobile_old_image', '!=', null)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') abort(403);
+        $history = Banner::onlyTrashed()->orderBy('deleted_at','desc')->get();
         return view('banners.gallery', compact('history'));
     }
 
     public function destroy(Banner $banner)
     {
-        if (auth()->user()->perfil !== 'admin') {
-            abort(403, 'Acesso não autorizado');
-        }
-        
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') abort(403);
         try {
-            
-            // Deletar arquivos físicos do storage
-            if ($banner->desktop_image) {
-                $desktopPath = 'public/banners/desktop/' . $banner->desktop_image;
-                if (Storage::exists($desktopPath)) {
-                    Storage::delete($desktopPath);
-                }
-                
-                // Deletar também da pasta public
-                $publicDesktopPath = public_path('storage/banners/desktop/' . $banner->desktop_image);
-                if (file_exists($publicDesktopPath)) {
-                    unlink($publicDesktopPath);
-                }
-            }
-            
-            if ($banner->mobile_image) {
-                $mobilePath = 'public/banners/mobile/' . $banner->mobile_image;
-                if (Storage::exists($mobilePath)) {
-                    Storage::delete($mobilePath);
-                }
-                
-                // Deletar também da pasta public
-                $publicMobilePath = public_path('storage/banners/mobile/' . $banner->mobile_image);
-                if (file_exists($publicMobilePath)) {
-                    unlink($publicMobilePath);
-                }
-            }
-            
+            // Soft delete apenas (não apagar arquivos imediatamente para permitir restore)
             $banner->delete();
-            
-            return redirect()->route('admin.banners.index')->with('success', 'Banner deletado com sucesso!');
-            
+            return redirect()->route('admin.banners.index')->with('success', 'Banner arquivado (soft delete) com sucesso!');
         } catch (\Exception $e) {
-            \Log::error('Erro ao deletar banner: ' . $e->getMessage());
+            Log::error('Erro ao deletar banner: ' . $e->getMessage());
             return redirect()->route('admin.banners.index')->with('error', 'Erro ao deletar banner: ' . $e->getMessage());
         }
     }

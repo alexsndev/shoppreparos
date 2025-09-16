@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Banner extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'titulo',
@@ -21,6 +22,10 @@ class Banner extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+    ];
+
+    protected $dates = [
+        'deleted_at'
     ];
 
     // Método para obter o banner ativo (compatibilidade)
