@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Helpers\BlogHelper;
 
 class Post extends Model
 {
@@ -142,7 +143,7 @@ class Post extends Model
             '@type' => 'BlogPosting',
             'headline' => $this->title,
             'description' => $this->meta_description ?: $this->excerpt,
-            'image' => $this->featured_image ? asset($this->featured_image) : null,
+            'image' => $this->featured_image ? BlogHelper::getImageUrl($this->featured_image) : null,
             'author' => [
                 '@type' => 'Organization',
                 'name' => $this->author_name
@@ -162,5 +163,10 @@ class Post extends Model
                 '@id' => $this->canonical_url
             ]
         ];
+    }
+
+    public function getFeaturedImageUrlAttribute()
+    {
+        return $this->featured_image ? BlogHelper::getImageUrl($this->featured_image) : null;
     }
 }

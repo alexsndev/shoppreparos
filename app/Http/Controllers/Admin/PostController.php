@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     private function checkAdmin()
     {
-        if (!auth()->check() || auth()->user()->perfil !== 'admin') {
+        if (!Auth::check() || Auth::user()->perfil !== 'admin') {
             abort(403, 'Acesso não autorizado');
         }
     }
@@ -107,44 +108,24 @@ class PostController extends Controller
             $data['tags'] = array_map('trim', explode(',', $request->tags));
         }
 
-        // Upload da imagem usando Storage (padrão de produtos/serviços)
+        // Upload da imagem padronizado no disco 'public' (storage/app/public/blog)
         if ($request->hasFile('featured_image')) {
             $imageFile = $request->file('featured_image');
             $imageName = 'post_' . time() . '_' . Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
-            
+
             try {
-                // Garantir que a pasta existe
-                if (!Storage::disk('public')->exists('blog')) {
-                    Storage::disk('public')->makeDirectory('blog');
-                }
-                
-                // Salvar usando Storage (mais eficiente e confiável)
-                $path = $imageFile->storeAs('public/blog', $imageName);
-                
-                // Verificar se o arquivo foi salvo
-                if ($path && Storage::disk('public')->exists('blog/' . $imageName)) {
+                Storage::disk('public')->makeDirectory('blog');
+                $stored = $imageFile->storeAs('blog', $imageName, 'public');
+                if ($stored) {
                     $data['featured_image'] = 'blog/' . $imageName;
                 } else {
-                    // Fallback: salvar diretamente na pasta public
-                    $destinationPath = public_path('img/blog');
-                    if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0755, true);
-                    }
-                    
-                    if ($imageFile->move($destinationPath, $imageName)) {
-                        $data['featured_image'] = 'img/blog/' . $imageName;
-                    }
+                    throw new \RuntimeException('Falha ao salvar imagem no disco public');
                 }
-            } catch (\Exception $e) {
-                // Log do erro para debug
+            } catch (\Throwable $e) {
                 Log::error('Erro no upload de imagem do blog: ' . $e->getMessage());
-                
-                // Fallback: salvar diretamente na pasta public
+                // Fallback para public/img/blog
                 $destinationPath = public_path('img/blog');
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
-                }
-                
+                if (!file_exists($destinationPath)) mkdir($destinationPath, 0755, true);
                 if ($imageFile->move($destinationPath, $imageName)) {
                     $data['featured_image'] = 'img/blog/' . $imageName;
                 }
@@ -152,7 +133,7 @@ class PostController extends Controller
         }
 
         // Definir autor
-        $data['author_name'] = auth()->user()->name ?? 'Equipe Shopp Reparos';
+    $data['author_name'] = Auth::user()->name ?? 'Equipe Shopp Reparos';
         
         // Data de publicação
         if ($data['published']) {
@@ -233,19 +214,14 @@ class PostController extends Controller
             $data['tags'] = null;
         }
 
-        // Upload da nova imagem usando Storage (padrão de produtos/serviços)
+        // Upload da nova imagem padronizado no disco 'public'
         if ($request->hasFile('featured_image')) {
             // Deletar imagem antiga se existir
-            if ($post->featured_image && $post->featured_image !== 'img/blog/') {
-                // Verificar se é do sistema antigo ou novo
+            if ($post->featured_image) {
                 if (str_starts_with($post->featured_image, 'img/blog/')) {
-                    // Sistema antigo - deletar de public/img/blog
-                    if (file_exists(public_path($post->featured_image))) {
-                        unlink(public_path($post->featured_image));
-                    }
-                } else {
-                    // Sistema novo - deletar de storage
-                    Storage::delete('public/' . $post->featured_image);
+                    if (file_exists(public_path($post->featured_image))) @unlink(public_path($post->featured_image));
+                } elseif (str_starts_with($post->featured_image, 'blog/')) {
+                    Storage::disk('public')->delete($post->featured_image);
                 }
             }
             
@@ -253,38 +229,18 @@ class PostController extends Controller
             $imageName = 'post_' . time() . '_' . Str::random(10) . '.' . $imageFile->getClientOriginalExtension();
             
             try {
-                // Garantir que a pasta existe
-                if (!Storage::disk('public')->exists('blog')) {
-                    Storage::disk('public')->makeDirectory('blog');
-                }
-                
-                // Salvar usando Storage (mais eficiente e confiável)
-                $path = $imageFile->storeAs('public/blog', $imageName);
-                
-                // Verificar se o arquivo foi salvo
-                if ($path && Storage::disk('public')->exists('blog/' . $imageName)) {
+                Storage::disk('public')->makeDirectory('blog');
+                $stored = $imageFile->storeAs('blog', $imageName, 'public');
+                if ($stored) {
                     $data['featured_image'] = 'blog/' . $imageName;
                 } else {
-                    // Fallback: salvar diretamente na pasta public
-                    $destinationPath = public_path('img/blog');
-                    if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0755, true);
-                    }
-                    
-                    if ($imageFile->move($destinationPath, $imageName)) {
-                        $data['featured_image'] = 'img/blog/' . $imageName;
-                    }
+                    throw new \RuntimeException('Falha ao salvar imagem no disco public');
                 }
-            } catch (\Exception $e) {
-                // Log do erro para debug
+            } catch (\Throwable $e) {
                 Log::error('Erro no upload de imagem do blog (update): ' . $e->getMessage());
-                
                 // Fallback: salvar diretamente na pasta public
                 $destinationPath = public_path('img/blog');
-                if (!file_exists($destinationPath)) {
-                    mkdir($destinationPath, 0755, true);
-                }
-                
+                if (!file_exists($destinationPath)) mkdir($destinationPath, 0755, true);
                 if ($imageFile->move($destinationPath, $imageName)) {
                     $data['featured_image'] = 'img/blog/' . $imageName;
                 }

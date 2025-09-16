@@ -546,7 +546,7 @@
                         <div class="group flex gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-100">
                             <div class="relative flex-shrink-0">
                                 @if($destaque->featured_image)
-                                    <img src="{{ asset($destaque->featured_image) }}" alt="{{ $destaque->title }}" class="w-20 h-20 object-cover rounded-2xl">
+                                    <img src="{{ \App\Helpers\BlogHelper::getImageUrl($destaque->featured_image) }}" alt="{{ $destaque->title }}" class="w-20 h-20 object-cover rounded-2xl">
                                 @else
                                     <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
                                         <span class="text-white font-bold text-lg">{{ substr($destaque->title, 0, 2) }}</span>

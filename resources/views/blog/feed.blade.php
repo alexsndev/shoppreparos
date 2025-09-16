@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+{!! '<?xml version="1.0" encoding="UTF-8"?>' !!}
 <rss version="2.0" 
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:atom="http://www.w3.org/2005/Atom"
@@ -27,8 +27,8 @@
             <pubDate>{{ $post->published_at->toRFC2822String() }}</pubDate>
             <guid isPermaLink="true">{{ route('blog.show', $post->slug) }}</guid>
             @if($post->featured_image)
-            <media:content url="{{ asset($post->featured_image) }}" type="image/jpeg" />
-            <enclosure url="{{ asset($post->featured_image) }}" type="image/jpeg" />
+            <media:content url="{{ \App\Helpers\BlogHelper::getImageUrl($post->featured_image) }}" type="image/jpeg" />
+            <enclosure url="{{ \App\Helpers\BlogHelper::getImageUrl($post->featured_image) }}" type="image/jpeg" />
             @endif
         </item>
         @endforeach

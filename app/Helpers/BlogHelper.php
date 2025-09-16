@@ -23,6 +23,7 @@ class BlogHelper
 
         // Sistema novo: storage/blog/
         if (str_starts_with($featuredImage, 'blog/')) {
+            // Usa caminho público padrão via symlink: public/storage/blog/...
             return asset('storage/' . $featuredImage);
         }
 
@@ -46,7 +47,7 @@ class BlogHelper
 
         // Sistema novo: storage/blog/
         if (str_starts_with($featuredImage, 'blog/')) {
-            return Storage::exists('public/' . $featuredImage);
+            return Storage::disk('public')->exists($featuredImage);
         }
 
         // Fallback para o sistema antigo
