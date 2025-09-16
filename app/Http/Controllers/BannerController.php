@@ -60,23 +60,25 @@ class BannerController extends Controller
                 $desktopFile = $request->file('desktop_image');
                 $desktopName = 'desktop_' . time() . '_' . Str::random(10) . '.' . $desktopFile->getClientOriginalExtension();
                 
-                // Garantir diretórios
-                if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('banners/desktop')) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('banners/desktop');
+                // Garantir diretórios no disco 'public'
+                if (!Storage::disk('public')->exists('banners/desktop')) {
+                    Storage::disk('public')->makeDirectory('banners/desktop');
                 }
 
-                // Salvar no storage (disco public)
-                $desktopPath = $desktopFile->storeAs('public/banners/desktop', $desktopName);
+                // Salvar no storage (disco public) - caminho relativo ao disco
+                $desktopPath = $desktopFile->storeAs('banners/desktop', $desktopName, 'public');
                 $banner->desktop_image = $desktopName;
 
-                // Copiar também para public/storage para compatibilidade com ambientes de hospedagem
-                $storageFile = storage_path('app/public/banners/desktop/' . $desktopName);
-                $publicDir = public_path('storage/banners/desktop');
-                if (!file_exists($publicDir)) {
-                    mkdir($publicDir, 0755, true);
-                }
-                if (file_exists($storageFile)) {
-                    @copy($storageFile, $publicDir . DIRECTORY_SEPARATOR . $desktopName);
+                // Só copiar para public/storage se o symlink não existir (fallback)
+                if (!is_link(public_path('storage'))) {
+                    $storageFile = storage_path('app/public/banners/desktop/' . $desktopName);
+                    $publicDir = public_path('storage/banners/desktop');
+                    if (!file_exists($publicDir)) {
+                        mkdir($publicDir, 0755, true);
+                    }
+                    if (file_exists($storageFile)) {
+                        @copy($storageFile, $publicDir . DIRECTORY_SEPARATOR . $desktopName);
+                    }
                 }
 
                 Log::info('Upload desktop concluído: ' . $desktopPath);
@@ -87,23 +89,25 @@ class BannerController extends Controller
                 $mobileFile = $request->file('mobile_image');
                 $mobileName = 'mobile_' . time() . '_' . Str::random(10) . '.' . $mobileFile->getClientOriginalExtension();
                 
-                // Garantir diretórios
-                if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('banners/mobile')) {
-                    \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('banners/mobile');
+                // Garantir diretórios no disco 'public'
+                if (!Storage::disk('public')->exists('banners/mobile')) {
+                    Storage::disk('public')->makeDirectory('banners/mobile');
                 }
 
-                // Salvar no storage (disco public)
-                $mobilePath = $mobileFile->storeAs('public/banners/mobile', $mobileName);
+                // Salvar no storage (disco public) - caminho relativo ao disco
+                $mobilePath = $mobileFile->storeAs('banners/mobile', $mobileName, 'public');
                 $banner->mobile_image = $mobileName;
 
-                // Copiar também para public/storage para compatibilidade com ambientes de hospedagem
-                $storageFile = storage_path('app/public/banners/mobile/' . $mobileName);
-                $publicDir = public_path('storage/banners/mobile');
-                if (!file_exists($publicDir)) {
-                    mkdir($publicDir, 0755, true);
-                }
-                if (file_exists($storageFile)) {
-                    @copy($storageFile, $publicDir . DIRECTORY_SEPARATOR . $mobileName);
+                // Só copiar para public/storage se o symlink não existir (fallback)
+                if (!is_link(public_path('storage'))) {
+                    $storageFile = storage_path('app/public/banners/mobile/' . $mobileName);
+                    $publicDir = public_path('storage/banners/mobile');
+                    if (!file_exists($publicDir)) {
+                        mkdir($publicDir, 0755, true);
+                    }
+                    if (file_exists($storageFile)) {
+                        @copy($storageFile, $publicDir . DIRECTORY_SEPARATOR . $mobileName);
+                    }
                 }
 
                 Log::info('Upload mobile concluído: ' . $mobilePath);
