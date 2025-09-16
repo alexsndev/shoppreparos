@@ -60,10 +60,25 @@ class BannerController extends Controller
                 $desktopFile = $request->file('desktop_image');
                 $desktopName = 'desktop_' . time() . '_' . Str::random(10) . '.' . $desktopFile->getClientOriginalExtension();
                 
-                // Usar Storage diretamente (mais eficiente)
+                // Garantir diretórios
+                if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('banners/desktop')) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('banners/desktop');
+                }
+
+                // Salvar no storage (disco public)
                 $desktopPath = $desktopFile->storeAs('public/banners/desktop', $desktopName);
                 $banner->desktop_image = $desktopName;
-                
+
+                // Copiar também para public/storage para compatibilidade com ambientes de hospedagem
+                $storageFile = storage_path('app/public/banners/desktop/' . $desktopName);
+                $publicDir = public_path('storage/banners/desktop');
+                if (!file_exists($publicDir)) {
+                    mkdir($publicDir, 0755, true);
+                }
+                if (file_exists($storageFile)) {
+                    @copy($storageFile, $publicDir . DIRECTORY_SEPARATOR . $desktopName);
+                }
+
                 Log::info('Upload desktop concluído: ' . $desktopPath);
             }
 
@@ -72,10 +87,25 @@ class BannerController extends Controller
                 $mobileFile = $request->file('mobile_image');
                 $mobileName = 'mobile_' . time() . '_' . Str::random(10) . '.' . $mobileFile->getClientOriginalExtension();
                 
-                // Usar Storage diretamente (mais eficiente)
+                // Garantir diretórios
+                if (!\Illuminate\Support\Facades\Storage::disk('public')->exists('banners/mobile')) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->makeDirectory('banners/mobile');
+                }
+
+                // Salvar no storage (disco public)
                 $mobilePath = $mobileFile->storeAs('public/banners/mobile', $mobileName);
                 $banner->mobile_image = $mobileName;
-                
+
+                // Copiar também para public/storage para compatibilidade com ambientes de hospedagem
+                $storageFile = storage_path('app/public/banners/mobile/' . $mobileName);
+                $publicDir = public_path('storage/banners/mobile');
+                if (!file_exists($publicDir)) {
+                    mkdir($publicDir, 0755, true);
+                }
+                if (file_exists($storageFile)) {
+                    @copy($storageFile, $publicDir . DIRECTORY_SEPARATOR . $mobileName);
+                }
+
                 Log::info('Upload mobile concluído: ' . $mobilePath);
             }
 
@@ -249,7 +279,7 @@ class BannerController extends Controller
             return redirect()->route('admin.banners.index')->with('success', 'Banners atualizados com sucesso!');
             
         } catch (\Exception $e) {
-            \Log::error('Erro ao atualizar banner: ' . $e->getMessage());
+            Log::error('Erro ao atualizar banner: ' . $e->getMessage());
             Log::error('Stack trace: ' . $e->getTraceAsString());
             
             if ($request->ajax() || $request->wantsJson()) {
