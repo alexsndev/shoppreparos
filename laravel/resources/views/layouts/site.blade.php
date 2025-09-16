@@ -858,25 +858,25 @@
             <div class="max-w-6xl mx-auto px-4">
                 <!-- Desktop: Navegação completa -->
                 <div class="hidden md:flex items-center justify-center space-x-8 py-3 overflow-x-auto">
-                    <a href="/" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         HOME
                     </a>
-                    <a href="/lojas" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/lojas" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         LOJAS
                     </a>
-                    <a href="/reparos-hidraulicos" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/reparos-hidraulicos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         REPAROS HIDRÁULICOS
                     </a>
-                    <a href="/site/produtos" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/site/produtos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         PRODUTOS
                     </a>
-                    <a href="/site/servicos" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/site/servicos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         SERVIÇOS
                     </a>
-                    <a href="/assistencia-tecnica" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/assistencia-tecnica" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         ASSISTÊNCIA TÉCNICA
                     </a>
-                    <a href="/blog" class="text-green-600 hover:text-green-700 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                    <a href="/blog" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         BLOG
                     </a>
                 </div>

@@ -29,7 +29,7 @@
 <meta name="twitter:title" content="{{ $post->title }}">
 <meta name="twitter:description" content="{{ $post->meta_description ?: $post->excerpt }}">
 @if($post->featured_image)
-<meta name="twitter:image" content="{{ asset($post->featured_image) }}">
+<meta name="twitter:image" content="{{ \App\Helpers\BlogHelper::getImageUrl($post->featured_image) }}">
 @endif
 
 <!-- Canonical URL -->

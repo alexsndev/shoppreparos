@@ -83,7 +83,8 @@ class PostController extends Controller
             'published' => 'boolean'
         ]);
 
-        $data = $request->all();
+    // Capturar apenas os campos esperados (evita lixo do $request->all())
+    $data = $request->only(['title','excerpt','content','category']);
         
         // Processar slug
         $data['slug'] = Str::slug($data['title']);
@@ -100,12 +101,15 @@ class PostController extends Controller
         $data['meta_title'] = $data['title'] . ' | Shopp Reparos';
         $data['meta_description'] = $data['excerpt'];
         
-        if ($request->meta_keywords) {
-            $data['meta_keywords'] = array_map('trim', explode(',', $request->meta_keywords));
+        if ($request->has('meta_keywords')) {
+            $data['meta_keywords'] = $request->filled('meta_keywords')
+                ? array_map('trim', explode(',', $request->meta_keywords))
+                : null;
         }
-        
-        if ($request->tags) {
-            $data['tags'] = array_map('trim', explode(',', $request->tags));
+        if ($request->has('tags')) {
+            $data['tags'] = $request->filled('tags')
+                ? array_map('trim', explode(',', $request->tags))
+                : null;
         }
 
         // Upload da imagem padronizado no disco 'public' (storage/app/public/blog)
@@ -133,10 +137,12 @@ class PostController extends Controller
         }
 
         // Definir autor
-    $data['author_name'] = Auth::user()->name ?? 'Equipe Shopp Reparos';
-        
-        // Data de publicação
-        if ($data['published']) {
+        $data['author_name'] = Auth::user()->name ?? 'Equipe Shopp Reparos';
+
+        // Publicação: checkbox ou botão "Criar Post" (action=publish)
+        $wantsPublish = $request->boolean('published') || $request->input('action') === 'publish';
+        $data['published'] = $wantsPublish;
+        if ($wantsPublish) {
             $data['published_at'] = now();
         }
 
@@ -183,7 +189,8 @@ class PostController extends Controller
             'published' => 'boolean'
         ]);
 
-        $data = $request->all();
+    // Capturar apenas os campos previstos
+    $data = $request->only(['title','excerpt','content','category']);
 
         // Atualizar slug se título mudou
         if ($data['title'] !== $post->title) {
@@ -202,16 +209,15 @@ class PostController extends Controller
         $data['meta_title'] = $data['title'] . ' | Shopp Reparos';
         $data['meta_description'] = $data['excerpt'];
         
-        if ($request->meta_keywords) {
-            $data['meta_keywords'] = array_map('trim', explode(',', $request->meta_keywords));
-        } else {
-            $data['meta_keywords'] = null;
+        if ($request->has('meta_keywords')) {
+            $data['meta_keywords'] = $request->filled('meta_keywords')
+                ? array_map('trim', explode(',', $request->meta_keywords))
+                : null; // permitir limpar
         }
-        
-        if ($request->tags) {
-            $data['tags'] = array_map('trim', explode(',', $request->tags));
-        } else {
-            $data['tags'] = null;
+        if ($request->has('tags')) {
+            $data['tags'] = $request->filled('tags')
+                ? array_map('trim', explode(',', $request->tags))
+                : null; // permitir limpar
         }
 
         // Upload da nova imagem padronizado no disco 'public'
@@ -247,11 +253,15 @@ class PostController extends Controller
             }
         }
 
-        // Data de publicação
-        if ($data['published'] && !$post->published) {
-            $data['published_at'] = now();
-        } elseif (!$data['published']) {
-            $data['published_at'] = null;
+        // Publicação (checkbox). Só alterar se o campo vier no request
+        if ($request->has('published')) {
+            $newPublished = $request->boolean('published');
+            $data['published'] = $newPublished;
+            if ($newPublished && !$post->published) {
+                $data['published_at'] = now();
+            } elseif (!$newPublished && $post->published) {
+                $data['published_at'] = null;
+            }
         }
 
         $post->update($data);
@@ -274,7 +284,7 @@ class PostController extends Controller
                 }
             } else {
                 // Sistema novo - deletar de storage
-                Storage::delete('public/' . $post->featured_image);
+                Storage::disk('public')->delete($post->featured_image);
             }
         }
 
