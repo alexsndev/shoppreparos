@@ -20,7 +20,7 @@ class TesteHostingerSeeder extends Seeder
                 'slug' => 'teste-hostinger-' . time(),
                 'excerpt' => 'Post de teste para verificar funcionamento no Hostinger',
                 'content' => '<h2>Teste</h2><p>Este é um post de teste para verificar se o seeder está funcionando no Hostinger.</p>',
-                'featured_image' => 'img/blog/teste.jpg',
+                'featured_image' => 'blog/teste.jpg',
                 'meta_title' => 'Teste Hostinger',
                 'meta_description' => 'Post de teste',
                 'meta_keywords' => ['teste', 'hostinger'],

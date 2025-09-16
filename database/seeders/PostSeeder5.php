@@ -18,7 +18,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['fios elétricos', 'bitolas fios', 'tipos fios', 'instalação elétrica', 'fios casa', 'fios 2.5mm'],
                 'tags' => ['Fios Elétricos', 'Bitolas', 'Instalação', 'Segurança'],
-                'featured_image' => 'img/blog/1755292083_fios-eletricos-tipos-bitolas-e-aplicacoes.webp'
+                'featured_image' => 'blog/1755292083_fios-eletricos-tipos-bitolas-e-aplicacoes.webp'
             ],
             [
                 'title' => 'Choque Elétrico: Primeiros Socorros e Prevenção',
@@ -26,7 +26,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['choque elétrico', 'primeiros socorros', 'prevenção choque', 'acidente elétrico', 'segurança elétrica'],
                 'tags' => ['Choque Elétrico', 'Primeiros Socorros', 'Prevenção', 'Segurança'],
-                'featured_image' => 'img/blog/1755293335_choque-eletrico-primeiros-socorros-e-prevencao.jpg'
+                'featured_image' => 'blog/1755293335_choque-eletrico-primeiros-socorros-e-prevencao.jpg'
             ],
             [
                 'title' => 'Aterramento Elétrico: Importância e Como Fazer',
@@ -34,7 +34,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['aterramento elétrico', 'haste aterramento', 'segurança elétrica', 'proteção', 'fio terra'],
                 'tags' => ['Aterramento', 'Proteção', 'Segurança', 'Instalação'],
-                'featured_image' => 'img/blog/aterramento-eletrico.jpg'
+                'featured_image' => 'blog/aterramento-eletrico.jpg'
             ],
             [
                 'title' => 'Timer Elétrico: Instalação e Programação',
@@ -42,7 +42,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['timer elétrico', 'automação residencial', 'programação timer', 'economia energia', 'timer digital'],
                 'tags' => ['Timer', 'Automação', 'Programação', 'Economia'],
-                'featured_image' => 'img/blog/timer-eletrico.jpg'
+                'featured_image' => 'blog/timer-eletrico.jpg'
             ],
             [
                 'title' => 'Serra: Tipos e Aplicações para Cada Material',
@@ -50,7 +50,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'ferramentas',
                 'meta_keywords' => ['serra', 'tipos serra', 'serra madeira', 'serra metal', 'serra circular', 'serra tico-tico'],
                 'tags' => ['Serra', 'Tipos', 'Aplicações', 'Materiais'],
-                'featured_image' => 'img/blog/serra-tipos-aplicacoes.jpg'
+                'featured_image' => 'blog/serra-tipos-aplicacoes.jpg'
             ],
             [
                 'title' => 'Morsa e Bancada: Organização da Oficina',
@@ -58,7 +58,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'ferramentas',
                 'meta_keywords' => ['morsa', 'bancada', 'oficina', 'organização ferramentas', 'bancada trabalho'],
                 'tags' => ['Morsa', 'Bancada', 'Oficina', 'Organização'],
-                'featured_image' => 'img/blog/morsa-bancada-oficina.jpg'
+                'featured_image' => 'blog/morsa-bancada-oficina.jpg'
             ],
             [
                 'title' => 'Manutenção de Ferramentas: Prolongue a Vida Útil',
@@ -66,7 +66,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'ferramentas',
                 'meta_keywords' => ['manutenção ferramentas', 'conservação ferramentas', 'cuidado ferramentas', 'limpeza ferramentas'],
                 'tags' => ['Manutenção', 'Conservação', 'Durabilidade', 'Cuidados'],
-                'featured_image' => 'img/blog/manutencao-ferramentas.jpg'
+                'featured_image' => 'blog/manutencao-ferramentas.jpg'
             ],
             [
                 'title' => 'Cores na Decoração: Psicologia e Combinações',
@@ -74,7 +74,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'pintura',
                 'meta_keywords' => ['cores decoração', 'psicologia cores', 'combinação cores', 'decoração ambiente', 'harmonia cores'],
                 'tags' => ['Cores', 'Psicologia', 'Decoração', 'Harmonia'],
-                'featured_image' => 'img/blog/cores-decoracao-psicologia.jpg'
+                'featured_image' => 'blog/cores-decoracao-psicologia.jpg'
             ],
             [
                 'title' => 'Economia de Energia em Casa: 20 Dicas Práticas',
@@ -82,7 +82,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'manutencao-geral',
                 'meta_keywords' => ['economia energia', 'reduzir conta luz', 'dicas economia', 'sustentabilidade', 'consumo energia'],
                 'tags' => ['Economia', 'Energia', 'Sustentabilidade', 'Dicas'],
-                'featured_image' => 'img/blog/economia-energia-dicas.jpg'
+                'featured_image' => 'blog/economia-energia-dicas.jpg'
             ],
             [
                 'title' => 'Organização de Ferramentas: Dicas de Armazenamento',
@@ -90,7 +90,7 @@ class PostSeeder5 extends Seeder
                 'category' => 'manutencao-geral',
                 'meta_keywords' => ['organização ferramentas', 'armazenamento ferramentas', 'oficina organizada', 'caixa ferramentas'],
                 'tags' => ['Organização', 'Armazenamento', 'Ferramentas', 'Oficina'],
-                'featured_image' => 'img/blog/organizacao-ferramentas-armazenamento.jpg'
+                'featured_image' => 'blog/organizacao-ferramentas-armazenamento.jpg'
             ]
         ];
 

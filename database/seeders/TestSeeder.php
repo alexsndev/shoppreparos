@@ -18,7 +18,7 @@ class TestSeeder extends Seeder
                 'slug' => 'post-teste-shopp-reparos',
                 'excerpt' => 'Este é um post de teste para verificar se o seeder está funcionando corretamente.',
                 'content' => '<h2>Introdução</h2><p>Este é um post de teste para verificar se o seeder está funcionando corretamente.</p>',
-                'featured_image' => 'img/blog/ferramentas-basicas-casa.jpg',
+                'featured_image' => 'blog/ferramentas-basicas-casa.jpg',
                 'meta_title' => 'Post de Teste - Shopp Reparos',
                 'meta_description' => 'Este é um post de teste para verificar se o seeder está funcionando corretamente.',
                 'meta_keywords' => ['teste', 'seeder', 'shopp reparos'],

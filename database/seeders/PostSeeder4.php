@@ -18,7 +18,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'reparos-hidraulicos',
                 'meta_keywords' => ['instalar torneira parede', 'torneira parede instalação', 'hidráulica torneira', 'torneira bica móvel'],
                 'tags' => ['Torneira', 'Instalação', 'Parede', 'Hidráulica'],
-                'featured_image' => 'img/blog/instalar-torneira-parede.jpg'
+                'featured_image' => 'blog/instalar-torneira-parede.jpg'
             ],
             [
                 'title' => 'Bomba d\'Água: Escolha, Instalação e Manutenção',
@@ -26,7 +26,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'reparos-hidraulicos',
                 'meta_keywords' => ['bomba água', 'bomba pressurizadora', 'instalação bomba', 'manutenção bomba', 'bomba centrífuga'],
                 'tags' => ['Bomba d\'Água', 'Pressurização', 'Instalação', 'Manutenção'],
-                'featured_image' => 'img/blog/bomba-agua-guia.jpg'
+                'featured_image' => 'blog/bomba-agua-guia.jpg'
             ],
             [
                 'title' => 'Infiltração em Parede: Causas e Como Resolver',
@@ -34,7 +34,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'reparos-hidraulicos',
                 'meta_keywords' => ['infiltração parede', 'umidade parede', 'vazamento parede', 'impermeabilização', 'mofo parede'],
                 'tags' => ['Infiltração', 'Umidade', 'Parede', 'Impermeabilização'],
-                'featured_image' => 'img/blog/infiltracao-parede.jpg'
+                'featured_image' => 'blog/infiltracao-parede.jpg'
             ],
             [
                 'title' => 'Extensão Elétrica Segura: Uso Correto e Cuidados',
@@ -42,7 +42,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['extensão elétrica', 'uso seguro extensão', 'segurança elétrica doméstica', 'benjamim elétrico'],
                 'tags' => ['Extensão', 'Segurança', 'Uso Correto', 'Prevenção'],
-                'featured_image' => 'img/blog/extensao-eletrica-segura.jpg'
+                'featured_image' => 'blog/extensao-eletrica-segura.jpg'
             ],
             [
                 'title' => 'DR (Dispositivo Residual): Importância e Funcionamento',
@@ -50,7 +50,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['DR elétrico', 'dispositivo residual', 'proteção elétrica', 'segurança', 'disjuntor DR'],
                 'tags' => ['DR', 'Proteção', 'Segurança', 'Dispositivo'],
-                'featured_image' => 'img/blog/dr-dispositivo-residual.jpg'
+                'featured_image' => 'blog/dr-dispositivo-residual.jpg'
             ],
             [
                 'title' => 'Como Instalar Tomada Nova: Passo a Passo Seguro',
@@ -58,7 +58,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'eletrica',
                 'meta_keywords' => ['instalar tomada', 'tomada nova instalação', 'elétrica residencial', 'tomada 3 pinos'],
                 'tags' => ['Tomada', 'Instalação', 'Elétrica', 'Residencial'],
-                'featured_image' => 'img/blog/instalar-tomada-nova.jpg'
+                'featured_image' => 'blog/instalar-tomada-nova.jpg'
             ],
             [
                 'title' => 'Martelo: Tipos e Técnicas de Uso Correto',
@@ -66,7 +66,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'ferramentas',
                 'meta_keywords' => ['martelo', 'tipos martelo', 'uso martelo', 'ferramenta manual', 'martelo unha'],
                 'tags' => ['Martelo', 'Tipos', 'Técnicas', 'Manual'],
-                'featured_image' => 'img/blog/martelo-tipos-tecnicas.jpg'
+                'featured_image' => 'blog/martelo-tipos-tecnicas.jpg'
             ],
             [
                 'title' => 'Trena e Nível: Medição Precisa em Obras',
@@ -74,7 +74,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'ferramentas',
                 'meta_keywords' => ['trena', 'nível', 'medição', 'precisão obra', 'nível bolha', 'trena laser'],
                 'tags' => ['Trena', 'Nível', 'Medição', 'Precisão'],
-                'featured_image' => 'img/blog/trena-nivel-medicao.jpg'
+                'featured_image' => 'blog/trena-nivel-medicao.jpg'
             ],
             [
                 'title' => 'Pincel vs Rolo: Quando Usar Cada Ferramenta',
@@ -82,7 +82,7 @@ class PostSeeder4 extends Seeder
                 'category' => 'pintura',
                 'meta_keywords' => ['pincel ou rolo', 'ferramenta pintura', 'acabamento pintura', 'rolo lã', 'pincel cerdas'],
                 'tags' => ['Pincel', 'Rolo', 'Ferramentas', 'Acabamento'],
-                'featured_image' => 'img/blog/pincel-vs-rolo.jpg'
+                'featured_image' => 'blog/pincel-vs-rolo.jpg',
             ],
             [
                 'title' => 'Segurança Doméstica: Checklist Essencial',
