@@ -14,6 +14,13 @@ class ProdutoController extends Controller
     public function index()
     {
         $produtos = Produto::with('categoria')->orderBy('nome')->paginate(12);
+
+        // Normaliza valores antigos (apenas para exibição)
+        $produtos->getCollection()->transform(function ($p) {
+            $p->imagem = $this->normalizeFilename($p->imagem);
+            return $p;
+        });
+
         return view('produtos.index', compact('produtos'));
     }
 
@@ -23,26 +30,35 @@ class ProdutoController extends Controller
         return view('produtos.create', compact('categorias'));
     }
 
+    private function normalizeFilename(?string $value): ?string
+    {
+        if (!$value) return null;
+        $v = ltrim(str_replace('\\','/',$value), '/');
+        // Remove repetições de produtos/ no início
+        $v = preg_replace('#^(produtos/)+#', '', $v);
+        // Se por algum motivo vier um caminho completo, fica só o basename
+        $v = basename($v);
+        return $v;
+    }
+
     private function uploadImagem(Request $request, array &$data, ?Produto $produto = null): void
     {
-        if (!$request->hasFile('imagem')) {
-            return;
-        }
+        if (!$request->hasFile('imagem')) return;
 
         try {
             $file = $request->file('imagem');
 
-            // Remove imagem antiga (considera formato antigo 'produtos/arquivo.ext' ou apenas 'arquivo.ext')
             if ($produto && $produto->imagem) {
-                $old = str_contains($produto->imagem, '/') ? $produto->imagem : 'produtos/' . $produto->imagem;
-                if (Storage::disk('public')->exists($old)) {
-                    Storage::disk('public')->delete($old);
+                $oldFile = $this->normalizeFilename($produto->imagem);
+                $oldPath = 'produtos/' . $oldFile;
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
                 }
             }
 
             $filename = uniqid('produto_') . '.' . $file->getClientOriginalExtension();
-            $file->storeAs('produtos', $filename, 'public'); // salva em storage/app/public/produtos/<filename>
-            $data['imagem'] = $filename; // apenas o nome no banco
+            $file->storeAs('produtos', $filename, 'public');
+            $data['imagem'] = $this->normalizeFilename($filename);
         } catch (\Throwable $e) {
             Log::error('Erro upload imagem produto: ' . $e->getMessage());
         }
@@ -60,6 +76,7 @@ class ProdutoController extends Controller
         $data['slug'] = null;
 
         $this->uploadImagem($request, $data);
+        $data['imagem'] = $this->normalizeFilename($data['imagem'] ?? null);
 
         try {
             Produto::create($data);
@@ -91,6 +108,9 @@ class ProdutoController extends Controller
         }
 
         $this->uploadImagem($request, $data, $produto);
+        if (array_key_exists('imagem', $data)) {
+            $data['imagem'] = $this->normalizeFilename($data['imagem']);
+        }
 
         try {
             $produto->update($data);
@@ -112,14 +132,15 @@ class ProdutoController extends Controller
         $produtoDuplicado->nome = $produto->nome . ' (Cópia)';
         $produtoDuplicado->slug = null;
 
-        if ($produto->imagem) {
-            $orig = str_contains($produto->imagem, '/') ? $produto->imagem : 'produtos/' . $produto->imagem;
-            if (Storage::disk('public')->exists($orig)) {
+        $originalNome = $this->normalizeFilename($produto->imagem);
+        if ($originalNome) {
+            $origPath = 'produtos/' . $originalNome;
+            if (Storage::disk('public')->exists($origPath)) {
                 try {
-                    $ext = pathinfo($orig, PATHINFO_EXTENSION);
+                    $ext = pathinfo($origPath, PATHINFO_EXTENSION);
                     $newFilename = 'produto_' . time() . '_' . Str::random(8) . '.' . $ext;
-                    Storage::disk('public')->copy($orig, 'produtos/' . $newFilename);
-                    $produtoDuplicado->imagem = $newFilename; // só nome
+                    Storage::disk('public')->copy($origPath, 'produtos/' . $newFilename);
+                    $produtoDuplicado->imagem = $newFilename;
                 } catch (\Throwable $e) {
                     Log::warning('Falha ao copiar imagem na duplicação: ' . $e->getMessage());
                 }
@@ -133,7 +154,8 @@ class ProdutoController extends Controller
     public function destroy(Produto $produto)
     {
         if ($produto->imagem) {
-            $path = str_contains($produto->imagem, '/') ? $produto->imagem : 'produtos/' . $produto->imagem;
+            $file = $this->normalizeFilename($produto->imagem);
+            $path = 'produtos/' . $file;
             if (Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->delete($path);
             }
