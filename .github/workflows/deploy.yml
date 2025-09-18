@@ -12,22 +12,41 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      FTP_HOST: ${{ secrets.FTP_HOST }}
+      FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      FTP_REMOTE_DIR: ${{ secrets.FTP_REMOTE_DIR }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: FTP Deploy (envia tudo para /laravel)
+      - name: Definir diretório alvo
+        run: |
+          : "${FTP_HOST:?Secret FTP_HOST ausente}"
+          : "${FTP_USERNAME:?Secret FTP_USERNAME ausente}"
+          : "${FTP_PASSWORD:?Secret FTP_PASSWORD ausente}"
+          if [ -z "$FTP_REMOTE_DIR" ]; then
+            echo "Sem FTP_REMOTE_DIR -> usando /laravel"
+            echo "FTP_TARGET_DIR=/laravel/" >> $GITHUB_ENV
+          else
+            case "$FTP_REMOTE_DIR" in
+              */) echo "FTP_TARGET_DIR=$FTP_REMOTE_DIR" >> $GITHUB_ENV ;;
+              *) echo "FTP_TARGET_DIR=${FTP_REMOTE_DIR}/" >> $GITHUB_ENV ;;
+            esac
+          fi
+          echo "Diretório remoto final: $(grep FTP_TARGET_DIR= $GITHUB_ENV | cut -d= -f2)"
+
+      - name: FTP Deploy (apenas pasta laravel na raiz)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.HOSTGATOR_FTP_HOST }}
-          username: ${{ secrets.HOSTGATOR_FTP_USERNAME }}
-            # Se usar SFTP troque password por privateKey e protocol: sftp
-          password: ${{ secrets.HOSTGATOR_FTP_PASSWORD }}
+          server: ${{ env.FTP_HOST }}
+          username: ${{ env.FTP_USERNAME }}
+          password: ${{ env.FTP_PASSWORD }}
           protocol: ftp
-          # Pasta raiz (ex: /public_html) + /laravel/
-          server-dir: ${{ secrets.HOSTGATOR_FTP_REMOTE_ROOT }}/laravel/
+          server-dir: ${{ env.FTP_TARGET_DIR }}
           timeout: 120000
           exclude: |
             **/.git*
@@ -36,5 +55,6 @@ jobs:
             **/tests/**
             **/storage/logs/**
             **/storage/framework/cache/data/**
-            **/vendor/**.gitkeep
+            **/.env.example
+            **/.env.local
           log-level: standard
