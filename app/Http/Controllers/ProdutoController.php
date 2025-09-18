@@ -90,6 +90,7 @@ class ProdutoController extends Controller
     public function edit(Produto $produto)
     {
         $categorias = Categoria::orderBy('nome')->get();
+        $produto->imagem = $this->normalizeFilename($produto->imagem); // normaliza antes da view
         return view('produtos.edit', compact('produto', 'categorias'));
     }
 
@@ -123,6 +124,8 @@ class ProdutoController extends Controller
 
     public function show(Produto $produto)
     {
+        // normaliza para evitar produtos/produtos/ ao montar a URL na view admin
+        $produto->imagem = $this->normalizeFilename($produto->imagem);
         return view('produtos.show', compact('produto'));
     }
 
