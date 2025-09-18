@@ -39,10 +39,9 @@ class ProdutoController extends Controller
         if ($request->hasFile('imagem')) {
             $imagemFile = $request->file('imagem');
             $imagemName = 'produto_' . time() . '_' . Str::random(10) . '.' . $imagemFile->getClientOriginalExtension();
-            
-            // Salvar diretamente usando Storage (mais eficiente)
             $path = $imagemFile->storeAs('public/produtos', $imagemName);
-            $data['imagem'] = 'produtos/' . $imagemName;
+            // Salva apenas o caminho relativo a partir de 'produtos/'
+            $data['imagem'] = $imagemName;
         }
 
         try {
@@ -78,15 +77,13 @@ class ProdutoController extends Controller
         if ($request->hasFile('imagem')) {
             // Deletar imagem antiga se existir
             if ($produto->imagem) {
-                Storage::delete('public/' . $produto->imagem);
+                Storage::delete('public/produtos/' . $produto->imagem);
             }
-            
             $imagemFile = $request->file('imagem');
             $imagemName = 'produto_' . time() . '_' . Str::random(10) . '.' . $imagemFile->getClientOriginalExtension();
-            
-            // Salvar diretamente usando Storage (mais eficiente)
             $path = $imagemFile->storeAs('public/produtos', $imagemName);
-            $data['imagem'] = 'produtos/' . $imagemName;
+            // Salva apenas o caminho relativo a partir de 'produtos/'
+            $data['imagem'] = $imagemName;
         }
         
         try {
@@ -120,6 +117,9 @@ class ProdutoController extends Controller
     public function destroy(Produto $produto)
     {
         $produto->delete();
+        return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
+    }
+}
         return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
     }
 }
