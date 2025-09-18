@@ -23,6 +23,34 @@ class ProdutoController extends Controller
         return view('produtos.create', compact('categorias'));
     }
 
+    private function uploadImagem(Request $request, array &$data, ?Produto $produto = null): void
+    {
+        if (!$request->hasFile('imagem')) {
+            return;
+        }
+
+        try {
+            $file = $request->file('imagem');
+
+            // Remove antiga (se existir) antes de salvar a nova
+            if ($produto && $produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
+                Storage::disk('public')->delete($produto->imagem);
+            }
+
+            // Armazena no disk 'public' dentro de produtos/ gerando nome único
+            $path = $file->store('produtos', 'public'); // retorna ex: produtos/abc123.webp
+
+            if (!$path) {
+                Log::error('Falha ao armazenar imagem de produto.');
+                return;
+            }
+
+            $data['imagem'] = $path; // agora guarda caminho relativo completo
+        } catch (\Throwable $e) {
+            Log::error('Erro upload imagem produto: '.$e->getMessage());
+        }
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -33,13 +61,7 @@ class ProdutoController extends Controller
             'preco' => 'nullable|numeric',
         ]);
         $data['slug'] = null;
-
-        if ($request->hasFile('imagem')) {
-            $imagemFile = $request->file('imagem');
-            $imagemName = 'produto_' . time() . '_' . Str::random(10) . '.' . $imagemFile->getClientOriginalExtension();
-            $imagemFile->storeAs('public/produtos', $imagemName);
-            $data['imagem'] = $imagemName;
-        }
+        $this->uploadImagem($request, $data);
 
         try {
             Produto::create($data);
@@ -70,15 +92,7 @@ class ProdutoController extends Controller
             $data['slug'] = null;
         }
 
-        if ($request->hasFile('imagem')) {
-            if ($produto->imagem) {
-                Storage::delete('public/produtos/' . $produto->imagem);
-            }
-            $imagemFile = $request->file('imagem');
-            $imagemName = 'produto_' . time() . '_' . Str::random(10) . '.' . $imagemFile->getClientOriginalExtension();
-            $imagemFile->storeAs('public/produtos', $imagemName);
-            $data['imagem'] = $imagemName;
-        }
+        $this->uploadImagem($request, $data, $produto);
 
         try {
             $produto->update($data);
@@ -99,11 +113,33 @@ class ProdutoController extends Controller
         $produtoDuplicado = $produto->replicate();
         $produtoDuplicado->nome = $produto->nome . ' (Cópia)';
         $produtoDuplicado->slug = null;
+
+        if ($produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
+            try {
+                $ext = pathinfo($produto->imagem, PATHINFO_EXTENSION);
+                $new = 'produtos/produto_' . time() . '_' . Str::random(8) . '.' . $ext;
+                Storage::disk('public')->copy($produto->imagem, $new);
+                $produtoDuplicado->imagem = $new;
+            } catch (\Throwable $e) {
+                Log::warning('Falha ao copiar imagem na duplicação: '.$e->getMessage());
+            }
+        }
+
         $produtoDuplicado->save();
 
         return redirect()->route('admin.produtos.index')->with('success', 'Produto duplicado com sucesso!');
     }
 
+    public function destroy(Produto $produto)
+    {
+        // Remove a imagem associada
+        if ($produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
+            Storage::disk('public')->delete($produto->imagem);
+        }
+        $produto->delete();
+        return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
+    }
+}
     public function destroy(Produto $produto)
     {
         $produto->delete();
