@@ -1413,8 +1413,8 @@
                     <!-- Grid de Serviços -->
                     <div class="produtos-grid" id="servicosGrid">
                         @forelse($servicos as $servico)
-                            <a href="/site/servicos/{{ $servico->id }}" class="produto-card moderno-card" data-marca="{{ $servico->marca }}">
-                                <div class="produto-image moderno-image">
+                            <a href="/site/servicos/{{ $servico->id }}" class="produto-card" data-marca="{{ $servico->marca }}">
+                                <div class="produto-image">
                                     @if($servico->imagem)
                                         <img src="{{ asset('storage/servicos/' . $servico->imagem) }}" alt="{{ $servico->titulo }}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                         <div class="produto-placeholder" style="display:none;">
@@ -1426,12 +1426,14 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="produto-info moderno-info">
-                                    <h3 class="produto-nome moderno-nome">{{ $servico->titulo }}</h3>
+                                <div class="produto-info">
+                                    <h3 class="produto-nome">{{ $servico->titulo }}</h3>
                                     @if($servico->valor_estimado && $servico->valor_estimado > 0)
-                                        <span class="produto-preco moderno-preco">R$ {{ number_format((float) $servico->valor_estimado, 2, ',', '.') }}</span>
+                                        <span class="produto-preco">R$ {{ number_format((float) $servico->valor_estimado, 2, ',', '.') }}</span>
+                                    @else
+                                        <span class="produto-preco" style="display:none;"></span>
                                     @endif
-                                    <button class="ver-detalhes moderno-btn" type="button">
+                                    <button class="ver-detalhes" type="button">
                                         <i class="fas fa-eye"></i>
                                         Ver detalhes
                                     </button>
@@ -1627,9 +1629,7 @@
                         <h2>Taguatinga</h2>
                         <p>QNL 10 Bloco A Loja 01 - Taguatinga Norte - DF</p>
                         
-                        <div class="loja-info">
-                            <div class
-                        <div class="parceiro-item">
+                        <div class="loja
                             <img src="{{ asset('img/parceiros/imperatriz.png') }}" alt="Imperatriz">
                         </div>
                         <div class="parceiro-item">
