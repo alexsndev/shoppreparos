@@ -32,19 +32,19 @@ class ProdutoController extends Controller
         try {
             $file = $request->file('imagem');
 
-            // Exclui a imagem antiga caso exista
-            if ($produto && $produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
-                Storage::disk('public')->delete($produto->imagem);
+            // Remove imagem antiga (considera formato antigo 'produtos/arquivo.ext' ou apenas 'arquivo.ext')
+            if ($produto && $produto->imagem) {
+                $old = str_contains($produto->imagem, '/') ? $produto->imagem : 'produtos/' . $produto->imagem;
+                if (Storage::disk('public')->exists($old)) {
+                    Storage::disk('public')->delete($old);
+                }
             }
 
-            $path = $file->store('produtos', 'public'); // ex: produtos/xxxx.webp
-            if (!$path) {
-                Log::error('Falha ao salvar imagem do produto.');
-                return;
-            }
-            $data['imagem'] = $path;
+            $filename = uniqid('produto_') . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('produtos', $filename, 'public'); // salva em storage/app/public/produtos/<filename>
+            $data['imagem'] = $filename; // apenas o nome no banco
         } catch (\Throwable $e) {
-            Log::error('Erro upload imagem produto: '.$e->getMessage());
+            Log::error('Erro upload imagem produto: ' . $e->getMessage());
         }
     }
 
@@ -112,14 +112,17 @@ class ProdutoController extends Controller
         $produtoDuplicado->nome = $produto->nome . ' (Cópia)';
         $produtoDuplicado->slug = null;
 
-        if ($produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
-            try {
-                $ext = pathinfo($produto->imagem, PATHINFO_EXTENSION);
-                $new = 'produtos/produto_' . time() . '_' . Str::random(8) . '.' . $ext;
-                Storage::disk('public')->copy($produto->imagem, $new);
-                $produtoDuplicado->imagem = $new;
-            } catch (\Throwable $e) {
-                Log::warning('Falha ao copiar imagem na duplicação: '.$e->getMessage());
+        if ($produto->imagem) {
+            $orig = str_contains($produto->imagem, '/') ? $produto->imagem : 'produtos/' . $produto->imagem;
+            if (Storage::disk('public')->exists($orig)) {
+                try {
+                    $ext = pathinfo($orig, PATHINFO_EXTENSION);
+                    $newFilename = 'produto_' . time() . '_' . Str::random(8) . '.' . $ext;
+                    Storage::disk('public')->copy($orig, 'produtos/' . $newFilename);
+                    $produtoDuplicado->imagem = $newFilename; // só nome
+                } catch (\Throwable $e) {
+                    Log::warning('Falha ao copiar imagem na duplicação: ' . $e->getMessage());
+                }
             }
         }
 
@@ -129,12 +132,13 @@ class ProdutoController extends Controller
 
     public function destroy(Produto $produto)
     {
-        if ($produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
-            Storage::disk('public')->delete($produto->imagem);
+        if ($produto->imagem) {
+            $path = str_contains($produto->imagem, '/') ? $produto->imagem : 'produtos/' . $produto->imagem;
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
         }
-
         $produto->delete();
-
         return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
     }
 }
