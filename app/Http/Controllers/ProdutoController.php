@@ -32,24 +32,21 @@ class ProdutoController extends Controller
             'categoria_id' => 'required|exists:categorias,id',
             'preco' => 'nullable|numeric',
         ]);
-
-        // Garantir que o slug seja gerado
-        $data['slug'] = null; // Será gerado automaticamente pelo modelo
+        $data['slug'] = null;
 
         if ($request->hasFile('imagem')) {
             $imagemFile = $request->file('imagem');
             $imagemName = 'produto_' . time() . '_' . Str::random(10) . '.' . $imagemFile->getClientOriginalExtension();
-            $path = $imagemFile->storeAs('public/produtos', $imagemName);
-            // Salva apenas o caminho relativo a partir de 'produtos/'
+            $imagemFile->storeAs('public/produtos', $imagemName);
             $data['imagem'] = $imagemName;
         }
 
         try {
-            $produto = Produto::create($data);
+            Produto::create($data);
             return redirect()->route('admin.produtos.index')->with('success', 'Produto cadastrado com sucesso!');
         } catch (\Exception $e) {
-            Log::error('Erro ao criar produto: ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Erro ao cadastrar produto: ' . $e->getMessage());
+            Log::error('Erro ao criar produto: '.$e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Erro ao cadastrar produto: '.$e->getMessage());
         }
     }
 
@@ -69,29 +66,26 @@ class ProdutoController extends Controller
             'preco' => 'nullable|numeric',
         ]);
 
-        // Se o nome mudou, limpar o slug para que seja regenerado
         if ($data['nome'] !== $produto->nome) {
             $data['slug'] = null;
         }
 
         if ($request->hasFile('imagem')) {
-            // Deletar imagem antiga se existir
             if ($produto->imagem) {
                 Storage::delete('public/produtos/' . $produto->imagem);
             }
             $imagemFile = $request->file('imagem');
             $imagemName = 'produto_' . time() . '_' . Str::random(10) . '.' . $imagemFile->getClientOriginalExtension();
-            $path = $imagemFile->storeAs('public/produtos', $imagemName);
-            // Salva apenas o caminho relativo a partir de 'produtos/'
+            $imagemFile->storeAs('public/produtos', $imagemName);
             $data['imagem'] = $imagemName;
         }
-        
+
         try {
             $produto->update($data);
             return redirect()->route('admin.produtos.index')->with('success', 'Produto atualizado!');
         } catch (\Exception $e) {
-            Log::error('Erro ao atualizar produto: ' . $e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Erro ao atualizar produto: ' . $e->getMessage());
+            Log::error('Erro ao atualizar produto: '.$e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Erro ao atualizar produto: '.$e->getMessage());
         }
     }
 
@@ -100,15 +94,11 @@ class ProdutoController extends Controller
         return view('produtos.show', compact('produto'));
     }
 
-    /**
-     * Duplicate the specified resource.
-     */
     public function duplicate(Produto $produto)
     {
-        // Criar uma cópia do produto
         $produtoDuplicado = $produto->replicate();
         $produtoDuplicado->nome = $produto->nome . ' (Cópia)';
-        $produtoDuplicado->slug = null; // Será gerado automaticamente
+        $produtoDuplicado->slug = null;
         $produtoDuplicado->save();
 
         return redirect()->route('admin.produtos.index')->with('success', 'Produto duplicado com sucesso!');
@@ -120,6 +110,4 @@ class ProdutoController extends Controller
         return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
     }
 }
-        return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
-    }
-}
+
