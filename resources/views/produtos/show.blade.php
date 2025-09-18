@@ -6,10 +6,22 @@
         {{-- Imagem do Produto --}}
         <div class="flex flex-col items-center justify-center gap-4">
             <div class="bg-gray-100 rounded-xl shadow p-6 flex flex-col items-center w-full">
-                @if($produto->imagem)
-                    <img src="{{ asset('storage/' . $produto->imagem) }}" alt="Imagem do Produto" class="w-full max-w-xs max-h-[400px] object-contain rounded-xl mb-4">
+                @php
+                    // Garante que só nome (fallback para registros antigos)
+                    $nomeImagem = $produto->imagem ? basename(str_replace('\\','/',$produto->imagem)) : null;
+                @endphp
+
+                @if($nomeImagem)
+                    <img
+                        src="{{ asset('storage/produtos/' . $nomeImagem) }}"
+                        alt="{{ $produto->nome }}"
+                        class="w-full max-w-xs max-h-[400px] object-contain rounded-xl mb-4"
+                        onerror="this.src='{{ asset('img/logo.png') }}';"
+                    >
                 @else
-                    <span class="text-gray-400">Imagem não disponível</span>
+                    <div class="w-full h-64 flex items-center justify-center bg-gray-100 rounded border text-gray-500">
+                        Sem imagem
+                    </div>
                 @endif
             </div>
         </div>
