@@ -434,28 +434,32 @@
             </div>
         </div>
 
-        <!-- Grid de Produtos -->
-        <div id="produtos-grid">
-            @foreach($produtos as $produto)
-                <div class="product-card" 
-                     data-categoria="{{ optional($produto->categoria)->nome }}"
-                     data-nome="{{ strtolower($produto->nome) }}">
-                    
-                    <!-- Product Image -->
-                    <div class="product-image">
-                        @if($produto->imagem)
-                            <img src="{{ asset('storage/' . $produto->imagem) }}" 
-                                 alt="{{ $produto->nome }}"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="text-4xl text-gray-300" style="display:none;">
-                                <i class="fas fa-box-open"></i>
-                            </div>
-                        @else
-                            <div class="text-4xl text-gray-300">
-                                <i class="fas fa-box-open"></i>
-                            </div>
-                        @endif
+       <!-- Grid de Produtos -->
+<div id="produtos-grid">
+    @foreach($produtos as $produto)
+        <div class="product-card" 
+             data-categoria="{{ optional($produto->categoria)->nome }}"
+             data-nome="{{ strtolower($produto->nome) }}">
+            
+            <!-- Product Image -->
+            <div class="product-image">
+                @if($produto->imagem)
+                    <img src="{{ asset('storage/' . ltrim($produto->imagem, '/')) }}" 
+                         alt="{{ $produto->nome }}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="text-4xl text-gray-300" style="display:none;">
+                        <i class="fas fa-box-open"></i>
                     </div>
+                @else
+                    <div class="text-4xl text-gray-300">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endforeach
+</div>
+
                     
                     <!-- Product Info -->
                     <div class="product-info">
