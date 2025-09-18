@@ -437,17 +437,17 @@
        <!-- Grid de Produtos -->
 <div id="produtos-grid">
     @foreach($produtos as $produto)
-        <div class="product-card" 
+        <div class="product-card"
              data-categoria="{{ optional($produto->categoria)->nome }}"
              data-nome="{{ strtolower($produto->nome) }}">
             
             <!-- Product Image -->
             <div class="product-image">
                 @if($produto->imagem)
-                    <img src="{{ asset('storage/' . ltrim($produto->imagem, '/')) }}" 
+                    <img src="{{ asset('storage/' . ltrim($produto->imagem,'/')) }}"
                          alt="{{ $produto->nome }}"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="text-4xl text-gray-300" style="display:none;">
+                    <div class="text-4xl text-gray-300 hidden">
                         <i class="fas fa-box-open"></i>
                     </div>
                 @else
@@ -455,6 +455,37 @@
                         <i class="fas fa-box-open"></i>
                     </div>
                 @endif
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                @if(optional($produto->categoria)->nome)
+                    <span class="product-category">
+                        <i class="fas fa-tag"></i>
+                        {{ $produto->categoria->nome }}
+                    </span>
+                @endif
+
+                <h3 class="product-title">{{ $produto->nome }}</h3>
+
+                @if($produto->preco)
+                    <div class="product-price">
+                        <span class="text-sm text-gray-500">Preço</span>
+                        <span class="price-value">
+                            R$ {{ number_format((float)$produto->preco, 2, ',', '.') }}
+                        </span>
+                    </div>
+                @endif
+
+                <div class="product-footer">
+                    <div class="product-status">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Disponível</span>
+                    </div>
+                    <a href="/site/produtos/{{ $produto->id }}-{{ $produto->slug }}" class="view-button">
+                        <i class="fas fa-eye"></i> Ver detalhes
+                    </a>
+                </div>
             </div>
         </div>
     @endforeach
@@ -571,7 +602,7 @@
           "@type": "Product",
           "position": {{ $i+1 }},
           "name": "{{ $produto->nome }}",
-          "image": "{{ $produto->imagem ? asset('storage/produtos/' . $produto->imagem) : asset('img/logo.png') }}",
+          "image": "{{ $produto->imagem ? asset('storage/' . ltrim($produto->imagem, '/')) : asset('img/logo.png') }}",
           "url": "{{ url('/site/produtos/' . $produto->id) }}",
           "category": "{{ optional($produto->categoria)->nome }}",
           "offers": {
