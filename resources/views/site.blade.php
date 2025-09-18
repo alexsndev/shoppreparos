@@ -1629,52 +1629,80 @@
                         <h2>Taguatinga</h2>
                         <p>QNL 10 Bloco A Loja 01 - Taguatinga Norte - DF</p>
                         
-                        <div class="loja
-                            <img src="{{ asset('img/parceiros/imperatriz.png') }}" alt="Imperatriz">
+                        <div class="loja-info">
+                            <div class="loja-info-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Seg a Sex: 8h às 18h | Sáb: 8h às 12h</span>
+                            </div>
+                            <div class="loja-info-item">
+                                <i class="fas fa-phone"></i>
+                                <span>(61) 99931-8077</span>
+                            </div>
                         </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/legrand.png') }}" alt="Legrand">
+                        
+                        <div class="loja-action">
+                            <a href="https://api.whatsapp.com/send?phone=5561999318077&text=Olá! Vim pelo site!" target="_blank">
+                                <button>
+                                    <i class="fab fa-whatsapp"></i>
+                                    Falar no WhatsApp
+                                </button>
+                            </a>
                         </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/Lorenzetti.png') }}" alt="Lorenzetti">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/osram.png') }}" alt="OSRAM">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/pado.png') }}" alt="Pado">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/siemens.png') }}" alt="Siemens">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/sil.png') }}" alt="SIL">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/stam.png') }}" alt="Stam">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/taschibra.png') }}" alt="Taschibra">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/tramontina.png') }}" alt="Tramontina">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/tigre.png') }}" alt="Tigre">
-                        </div>
-                    </div>
-                    
-                    <!-- Indicadores de progresso -->
-                    <div class="indicadores-parceiros">
-                        <div class="indicador active" data-slide="0"></div>
-                        <div class="indicador" data-slide="1"></div>
-                        <div class="indicador" data-slide="2"></div>
-                        <div class="indicador" data-slide="3"></div>
-                        <div class="indicador" data-slide="4"></div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+
+        <!-- Seção de Parceiros (movida para fora das lojas) -->
+        <div class="parceiros">
+            <div class="max-w-6xl mx-auto px-4">
+                <h2>Parceiros</h2>
+                <div class="parceiros-grid">
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/imperatriz.png') }}" alt="Imperatriz">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/legrand.png') }}" alt="Legrand">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/Lorenzetti.png') }}" alt="Lorenzetti">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/osram.png') }}" alt="OSRAM">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/pado.png') }}" alt="Pado">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/siemens.png') }}" alt="Siemens">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/sil.png') }}" alt="SIL">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/stam.png') }}" alt="Stam">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/taschibra.png') }}" alt="Taschibra">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/tramontina.png') }}" alt="Tramontina">
+                    </div>
+                    <div class="parceiro-item">
+                        <img src="{{ asset('img/parceiros/tigre.png') }}" alt="Tigre">
+                    </div>
+                </div>
+
+                <!-- Indicadores de progresso -->
+                <div class="indicadores-parceiros">
+                    <div class="indicador active" data-slide="0"></div>
+                    <div class="indicador" data-slide="1"></div>
+                    <div class="indicador" data-slide="2"></div>
+                    <div class="indicador" data-slide="3"></div>
+                    <div class="indicador" data-slide="4"></div>
+                </div>
+            </div>
+        </div>
 
     </div>
     <script src="{{ asset('script.js') }}" defer></script>
