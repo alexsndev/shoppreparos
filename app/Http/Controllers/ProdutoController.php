@@ -32,20 +32,17 @@ class ProdutoController extends Controller
         try {
             $file = $request->file('imagem');
 
-            // Remove antiga (se existir) antes de salvar a nova
+            // Exclui a imagem antiga caso exista
             if ($produto && $produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
                 Storage::disk('public')->delete($produto->imagem);
             }
 
-            // Armazena no disk 'public' dentro de produtos/ gerando nome único
-            $path = $file->store('produtos', 'public'); // retorna ex: produtos/abc123.webp
-
+            $path = $file->store('produtos', 'public'); // ex: produtos/xxxx.webp
             if (!$path) {
-                Log::error('Falha ao salvar imagem de produto.');
+                Log::error('Falha ao salvar imagem do produto.');
                 return;
             }
-
-            $data['imagem'] = $path; // agora guarda caminho relativo completo
+            $data['imagem'] = $path;
         } catch (\Throwable $e) {
             Log::error('Erro upload imagem produto: '.$e->getMessage());
         }
@@ -135,15 +132,9 @@ class ProdutoController extends Controller
         if ($produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
             Storage::disk('public')->delete($produto->imagem);
         }
-        $produto->delete();
-        return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
-    }
-}
-}
-    public function destroy(Produto $produto)
-    {
-        $produto->delete();
-        return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
-    }
-}
 
+        $produto->delete();
+
+        return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
+    }
+}
