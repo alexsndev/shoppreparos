@@ -41,7 +41,7 @@ class ProdutoController extends Controller
             $path = $file->store('produtos', 'public'); // retorna ex: produtos/abc123.webp
 
             if (!$path) {
-                Log::error('Falha ao armazenar imagem de produto.');
+                Log::error('Falha ao salvar imagem de produto.');
                 return;
             }
 
@@ -61,6 +61,7 @@ class ProdutoController extends Controller
             'preco' => 'nullable|numeric',
         ]);
         $data['slug'] = null;
+
         $this->uploadImagem($request, $data);
 
         try {
@@ -68,7 +69,7 @@ class ProdutoController extends Controller
             return redirect()->route('admin.produtos.index')->with('success', 'Produto cadastrado com sucesso!');
         } catch (\Exception $e) {
             Log::error('Erro ao criar produto: '.$e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Erro ao cadastrar produto: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Erro ao cadastrar produto.');
         }
     }
 
@@ -99,7 +100,7 @@ class ProdutoController extends Controller
             return redirect()->route('admin.produtos.index')->with('success', 'Produto atualizado!');
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar produto: '.$e->getMessage());
-            return redirect()->back()->withInput()->with('error', 'Erro ao atualizar produto: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Erro ao atualizar produto.');
         }
     }
 
@@ -126,19 +127,18 @@ class ProdutoController extends Controller
         }
 
         $produtoDuplicado->save();
-
         return redirect()->route('admin.produtos.index')->with('success', 'Produto duplicado com sucesso!');
     }
 
     public function destroy(Produto $produto)
     {
-        // Remove a imagem associada
         if ($produto->imagem && Storage::disk('public')->exists($produto->imagem)) {
             Storage::disk('public')->delete($produto->imagem);
         }
         $produto->delete();
         return redirect()->route('admin.produtos.index')->with('success', 'Produto removido!');
     }
+}
 }
     public function destroy(Produto $produto)
     {
