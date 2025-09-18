@@ -1127,6 +1127,100 @@
                 min-height: 140px !important;
             }
         }
+
+        /* Estilos modernos para os cards */
+        .moderno-card {
+            border: none !important;
+            border-radius: 16px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+            overflow: hidden !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+        
+        .moderno-card:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .moderno-image {
+            height: 220px !important;
+            min-height: 220px !important;
+            max-height: 220px !important;
+            overflow: hidden !important;
+            background: #f8fafc !important;
+            border-radius: 16px 16px 0 0 !important;
+        }
+        
+        .moderno-image img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            transition: transform 0.3s ease !important;
+        }
+        
+        .moderno-card:hover .moderno-image img {
+            transform: scale(1.05) !important;
+        }
+        
+        .moderno-info {
+            padding: 16px !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            text-align: center !important;
+            min-height: 180px !important; /* Altura mínima para o conteúdo */
+        }
+        
+        .moderno-nome {
+            font-size: 1.2rem !important;
+            font-weight: 600 !important;
+            color: #1f2937 !important;
+            margin: 0 !important;
+            line-height: 1.4 !important;
+            min-height: 3rem !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2 !important;
+            -webkit-box-orient: vertical !important;
+            overflow: hidden !important;
+            text-align: center !important;
+            word-wrap: break-word !important;
+            hyphens: auto !important;
+        }
+        
+        .moderno-preco {
+            display: block !important;
+            font-size: 1.4rem !important;
+            font-weight: 700 !important;
+            color: #059669 !important;
+            margin: 0 !important;
+            text-align: center !important;
+            padding: 8px 0 !important;
+        }
+        
+        .moderno-btn {
+            width: 100% !important;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+            color: white !important;
+            border: none !important;
+            padding: 12px 0 !important;
+            border-radius: 12px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            margin-top: auto !important; /* Empurra o botão para baixo */
+            text-align: center !important;
+            flex-shrink: 0 !important; /* Impede que o botão encolha */
+        }
+        
+        .moderno-btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af) !important;
+            transform: translateY(-2px) !important;
+        }
     </style>
     
     <!-- Scripts -->
@@ -1270,8 +1364,8 @@
                     <!-- Grid de Serviços -->
                     <div class="produtos-grid" id="servicosGrid">
                         @forelse($servicos as $servico)
-                            <a href="/site/servicos/{{ $servico->id }}" class="produto-card" data-marca="{{ $servico->marca }}">
-                                <div class="produto-image">
+                            <a href="/site/servicos/{{ $servico->id }}" class="produto-card moderno-card" data-marca="{{ $servico->marca }}">
+                                <div class="produto-image moderno-image">
                                     @if($servico->imagem)
                                         <img src="{{ asset('storage/servicos/' . $servico->imagem) }}" alt="{{ $servico->titulo }}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                         <div class="produto-placeholder" style="display:none;">
@@ -1283,14 +1377,12 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="produto-info">
-                                    <h3 class="produto-nome">{{ $servico->titulo }}</h3>
+                                <div class="produto-info moderno-info">
+                                    <h3 class="produto-nome moderno-nome">{{ $servico->titulo }}</h3>
                                     @if($servico->valor_estimado && $servico->valor_estimado > 0)
-                                        <span class="produto-preco">R$ {{ number_format((float) $servico->valor_estimado, 2, ',', '.') }}</span>
-                                    @else
-                                        <span class="produto-preco" style="display:none;"></span>
+                                        <span class="produto-preco moderno-preco">R$ {{ number_format((float) $servico->valor_estimado, 2, ',', '.') }}</span>
                                     @endif
-                                    <button class="ver-detalhes" type="button">
+                                    <button class="ver-detalhes moderno-btn" type="button">
                                         <i class="fas fa-eye"></i>
                                         Ver detalhes
                                     </button>
