@@ -979,7 +979,7 @@
         
         .produto-preco {
             display: block !important;
-            font-size: 1.3rem !important;
+            font-size: 1.4rem !important;
             font-weight: 700 !important;
             color: #059669 !important;
             margin: 0 !important;
@@ -1220,6 +1220,55 @@
         .moderno-btn:hover {
             background: linear-gradient(135deg, #2563eb, #1e40af) !important;
             transform: translateY(-2px) !important;
+        }
+
+        /* Ensure consistent card height and width */
+        .produto-card, .servico-card {
+            height: 100% !important;
+            min-height: 400px !important; /* Consistent minimum height */
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
+        }
+
+        .produto-image, .servico-image {
+            height: 200px !important; /* Consistent image height */
+            min-height: 200px !important;
+            max-height: 200px !important;
+            overflow: hidden !important;
+            background: #f8fafc !important;
+            border-radius: 16px 16px 0 0 !important;
+        }
+
+        .produto-image img, .servico-image img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important; /* Ensure images fill the container */
+        }
+
+        /* Adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .produto-card, .servico-card {
+                min-height: 380px !important;
+            }
+
+            .produto-image, .servico-image {
+                height: 180px !important;
+                min-height: 180px !important;
+                max-height: 180px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .produto-card, .servico-card {
+                min-height: 360px !important;
+            }
+
+            .produto-image, .servico-image {
+                height: 160px !important;
+                min-height: 160px !important;
+                max-height: 160px !important;
+            }
         }
     </style>
     
@@ -1579,56 +1628,7 @@
                         <p>QNL 10 Bloco A Loja 01 - Taguatinga Norte - DF</p>
                         
                         <div class="loja-info">
-                            <div class="loja-info-item">
-                                <i class="fas fa-clock"></i>
-                                <span>Seg a Sex: 8h às 18h | Sáb: 8h às 12h</span>
-                            </div>
-                            <div class="loja-info-item">
-                                <i class="fas fa-phone"></i>
-                                <span>(61) 99931-8077</span>
-                            </div>
-                        </div>
-                        
-                        <div class="loja-action">
-                            <a href="https://api.whatsapp.com/send?phone=5561999318077&text=Olá! Vim pelo site!" target="_blank">
-                                <button>
-                                    <i class="fab fa-whatsapp"></i>
-                                    Falar no WhatsApp
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- NOSSOS PARCEIROS -->
-        <!-- IMPORTANTE: Esta seção usa CSS externo (parceiros.css) + estilos críticos inline para garantir funcionamento em produção -->
-        <section class="parceiros">
-            <div class="max-w-6xl mx-auto px-4">
-                <h2>Nossos Parceiros</h2>
-                <div class="carrossel-parceiros-simples">
-                    <div class="parceiros-grid">
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/blukit.png') }}" alt="Blukit">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/bosch.png') }}" alt="Bosch">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/censi.png') }}" alt="Censi">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/dewalt.png') }}" alt="DeWalt">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/docol.png') }}" alt="Docol">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/exatron.png') }}" alt="Exatron">
-                        </div>
-                        <div class="parceiro-item">
-                            <img src="{{ asset('img/parceiros/hydra.png') }}" alt="Hydra">
-                        </div>
+                            <div class
                         <div class="parceiro-item">
                             <img src="{{ asset('img/parceiros/imperatriz.png') }}" alt="Imperatriz">
                         </div>
