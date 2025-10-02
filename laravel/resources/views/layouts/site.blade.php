@@ -867,9 +867,15 @@
                     <a href="/reparos-hidraulicos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         REPAROS HIDRÁULICOS
                     </a>
-                    <a href="/site/produtos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
-                        PRODUTOS
-                    </a>
+                    <div class="relative group">
+                        <a href="/site/produtos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
+                            PRODUTOS
+                        </a>
+                        <!-- Dropdown submenu for Produtos -->
+                        <div class="absolute left-1/2 transform -translate-x-1/2 mt-2 hidden group-hover:block bg-white rounded-lg shadow-lg z-50 w-40">
+                            <a href="/site/produtos?categoria=torneiras" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Torneiras</a>
+                        </div>
+                    </div>
                     <a href="/site/servicos" class="text-gray-700 hover:text-primary-600 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 whitespace-nowrap">
                         SERVIÇOS
                     </a>
@@ -918,10 +924,16 @@
                                     <span class="font-medium text-sm">Reparos Hidráulicos</span>
                                 </a>
                                 
-                                <a href="/site/produtos" class="flex items-center py-2 px-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group">
-                                    <i class="fas fa-box mr-3 text-orange-500 w-4 group-hover:scale-110 transition-transform"></i>
-                                    <span class="font-medium text-sm">Produtos</span>
-                                </a>
+                                <div>
+                                    <a href="/site/produtos" class="flex items-center py-2 px-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group">
+                                        <i class="fas fa-box mr-3 text-orange-500 w-4 group-hover:scale-110 transition-transform"></i>
+                                        <span class="font-medium text-sm">Produtos</span>
+                                    </a>
+                                    <!-- Sub-item visible in mobile menu -->
+                                    <a href="/site/produtos?categoria=torneiras" class="flex items-center py-2 px-6 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors group text-sm">
+                                        <span class="ml-1">• Torneiras</span>
+                                    </a>
+                                </div>
                                 
                                 <a href="/site/servicos" class="flex items-center py-3 px-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors group">
                                     <i class="fas fa-tools mr-3 text-purple-500 w-4 group-hover:scale-110 transition-transform"></i>
