@@ -491,40 +491,6 @@
     @endforeach
 </div>
 
-                    
-                    <!-- Product Info -->
-                    <div class="product-info">
-                        @if(optional($produto->categoria)->nome)
-                            <span class="product-category">
-                                <i class="fas fa-tag"></i>
-                                {{ $produto->categoria->nome }}
-                            </span>
-                        @endif
-                        
-                        <h3 class="product-title">{{ $produto->nome }}</h3>
-                        
-                        @if($produto->preco)
-                            <div class="product-price">
-                                <span class="text-sm text-gray-500">Preço</span>
-                                <span class="price-value">R$ {{ number_format((float) $produto->preco, 2, ',', '.') }}</span>
-                            </div>
-                        @endif
-                        
-                        <div class="product-footer">
-                            <div class="product-status">
-                                <i class="fas fa-check-circle"></i>
-                                <span>Disponível</span>
-                            </div>
-                            <a href="/site/produtos/{{ $produto->id }}-{{ $produto->slug }}" 
-                               class="view-button">
-                                <i class="fas fa-eye"></i>
-                                Ver detalhes
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
 
         <!-- Paginação -->
         @if($produtos->hasPages())
